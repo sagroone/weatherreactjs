@@ -48,14 +48,14 @@
         font-weight: 700;
 
         &__num {
-            margin-right: 15px;
+            margin-right: 5px;
         }
 
         &__units {
             cursor: pointer;
             opacity: .3;
             position: relative;
-            margin-left: 20px;
+            margin-left: 25px;
 
             &.active {
                 opacity: 1;

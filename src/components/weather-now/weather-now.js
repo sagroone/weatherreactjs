@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+
 import './_weather-now.scss';
 
 export default class WeatherNow extends Component {
@@ -24,9 +25,9 @@ export default class WeatherNow extends Component {
         const {main : { temp, temp_max, temp_min }} = this.props
 
         const icon = './icon/' + this.props.weather[0].icon + '.svg';
-
-        const cel = (this.state.units == 'metric') ? 'current-deg__units active' : 'current-deg__units'
-        const far = (this.state.units == 'imperial') ? 'current-deg__units active' : 'current-deg__units'
+   
+        const cel = (this.props.state.units === 'metric') ? 'current-deg__units active' : 'current-deg__units'
+        const far = (this.props.state.units === 'imperial') ? 'current-deg__units active' : 'current-deg__units'
         return(
             <div className={className}>
                 {!this.state.isActive ? this.timeout() : null}
@@ -41,12 +42,12 @@ export default class WeatherNow extends Component {
                     </div>
                     <div className="current-deg">
                         <span className="current-deg__num">{this.addPlus(Math.floor(temp))}</span>
-                        <span data-units="metric" onClick={() => {this.props.changeUnits(this.state.name)}} className={cel}>C</span>
-                        <span data-units="imperial" onClick={() => {this.props.changeUnits(this.state.name)}} className={far}>F</span>
+                        <span onClick={() => {this.props.changeUnits('metric')}} className={cel}>C</span>
+                        <span onClick={() => {this.props.changeUnits('imperial')}} className={far}>F</span>
                     </div>
-                    <div className="weather-conditions"></div>
+                    <div className="weather-conditions">{this.props.weather[0].description}</div>
                 </div>
             </div>
         )
-    }
+    } 
 }
