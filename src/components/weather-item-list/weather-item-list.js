@@ -1,18 +1,16 @@
-import React, { Component } from 'react';
+import React from 'react';
 import WeatherItem from '../weather-item';
 
 import './_weather-item-list.scss';
 
-export default class WeatherItemList extends Component {
+const WeatherItemList = ( props ) => {
+    const className = props.state.isActive ? 'weather-item-list show' : 'weather-item-list';
 
-    render() {
-
-        return(
-            <div className="weather-item-list">
-
-                <WeatherItem {...this.props}/>
-            </div>
-        );
-    }
+    return(
+        <div className={className}>
+          {props.list.map(( number ) => <WeatherItem {...number} />)}
+        </div>
+    );
 }
 
+export default WeatherItemList

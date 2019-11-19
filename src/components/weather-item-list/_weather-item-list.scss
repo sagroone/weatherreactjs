@@ -1,0 +1,14 @@
+.weather-item-list {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 67px;
+    color: #fff;
+    transform: translateY(100%);
+    opacity: 0;
+    transition: 250ms all;
+
+    &.show {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}

@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 
 import './_weather-item.scss'
 
@@ -26,21 +26,44 @@ const monthsList = [
     'nov',
     'dec'
 ];
-export default class WeatherItem extends Component {
 
-    render() {
-       console.log(this.props)
-        
-        return (
-            <div className="weather-item">
-                <div className="weather-item__ico">
-                    <object type="">ico</object>
-                </div>
-                <div className="weather-item__min-max"> <span className="cel"></span></div>
-                <div className="weather-item__day"></div>
-            </div>
-
-        );
+ const WeatherItem = ( props ) => {
+    const addPlus = ( num ) => {
+        return ( num > 0 ) ? '+' + num : num;
     }
+
+    console.log(props[0])
+
+    const {dt, deg, temp : { min, max }} = props;
+    const currentDate = new Date()
+    const date = new Date(dt * 1000);
+    const weeksDay = date.getDay();
+    const monthsNum = date.getDate();
+    const months = date.getMonth();
+    const year = date.getFullYear();
+
+    const DateInfo = () => {
+        return (
+            <div>
+                <p>{weeksList[weeksDay]}</p>
+                <p>{monthsNum} {monthsList[months]} {year}</p>
+            </div>
+        )
+    }
+    const todayClass = currentDate.getDate() === date.getDate() ? 'weather-item today' : 'weather-item';
+    const todayText =  currentDate.getDate() === date.getDate() ? 'Today' : <DateInfo/>;
+    
+    return (
+        <div key={ deg } className={ todayClass }>
+            <div className="weather-item__ico">
+                <object type="">ico</object>
+            </div>
+            <div className="weather-item__min-max"> {addPlus(Math.floor(min))}-{Math.floor(max)} <span className="cel">C</span></div>
+            <div className="weather-item__day">
+                {todayText}
+            </div>
+        </div>
+    );
 }
 
+export default WeatherItem;
