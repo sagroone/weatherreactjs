@@ -1,10 +1,11 @@
 .weather-now {
     margin-top: 45px;
     display: flex;
+    align-items: center;
     color: #fff;
     opacity: 0;
     transform: translateY(200%);
-    transition: 250ms;
+    transition: 550ms;
 
     & svg path {
         stroke: #fff;
@@ -27,15 +28,11 @@
         }
     }
 
-    &__ico {
+    &-ico {
         display: flex;
         align-items: center;
-        width: 110px;
         margin-right: 20px;
-
-        & object {
-            width: 100%;
-        }
+        font-size: 120px;
     }
 
     &__info {

@@ -32,8 +32,6 @@ const monthsList = [
         return ( num > 0 ) ? '+' + num : num;
     }
 
-    console.log(props[0])
-
     const {dt, deg, temp : { min, max }} = props;
     const currentDate = new Date()
     const date = new Date(dt * 1000);
@@ -52,13 +50,14 @@ const monthsList = [
     }
     const todayClass = currentDate.getDate() === date.getDate() ? 'weather-item today' : 'weather-item';
     const todayText =  currentDate.getDate() === date.getDate() ? 'Today' : <DateInfo/>;
-    
+    const iconClass = 'icon-' + props.weather[0].icon;
+
     return (
         <div key={ deg } className={ todayClass }>
             <div className="weather-item__ico">
-                <object type="">ico</object>
+                <i className={iconClass}></i>
             </div>
-            <div className="weather-item__min-max"> {addPlus(Math.floor(min))}-{Math.floor(max)} <span className="cel">C</span></div>
+            <div className="weather-item__min-max"> {addPlus(Math.floor(min))}  {addPlus(Math.floor(max))} <span className="cel">C</span></div>
             <div className="weather-item__day">
                 {todayText}
             </div>

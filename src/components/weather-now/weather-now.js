@@ -1,8 +1,13 @@
 import React from 'react'
 
 import './_weather-now.scss';
+
 const WeatherNow = ( props ) => {
-    
+
+    const returnUnits = ( value ) => {
+        props.showElem( props.name, value );
+    }
+
     const addPlus = ( num ) => {
         return ( num > 0 ) ? '+' + num : num;
     }
@@ -10,14 +15,17 @@ const WeatherNow = ( props ) => {
     const className = props.state.isActive ? 'weather-now show' : 'weather-now ';
     const {main : { temp, temp_max, temp_min }} = props
 
-    // const icon = './icon/' + props.weather[0].icon + '.svg';
-
+    
+ 
     const cel = (props.state.units === 'metric') ? 'current-deg__units active' : 'current-deg__units'
     const far = (props.state.units === 'imperial') ? 'current-deg__units active' : 'current-deg__units'
+
+    const iconClass = 'icon-' + props.weather[0].icon;
+    
     return(
         <div className={className}>
             <div className="weather-now-ico">
-                Ico
+                <i className={iconClass}></i>
             </div>
             <div className="weather-now__info">
                 <div className="whole-day">
@@ -26,8 +34,8 @@ const WeatherNow = ( props ) => {
                 </div>
                 <div className="current-deg">
                     <span className="current-deg__num">{addPlus(Math.floor(temp))}</span>
-                    <span onClick={() => {props.changeUnits('metric')}} className={cel}>C</span>
-                    <span onClick={() => {props.changeUnits('imperial')}} className={far}>F</span>
+                    <span onClick={() => {returnUnits('metric')}} className={cel}>C</span>
+                    <span onClick={() => {returnUnits('imperial')}} className={far}>F</span>
                 </div>
                 <div className="weather-conditions">{props.weather[0].description}</div>
             </div>

@@ -1,22 +1,31 @@
-import React from 'react';
+import React, { Component } from 'react';
 
 import './_search-form.scss';
-import logo from './search-ico.svg';
+import ico from './search-ico.svg';
 
 
 const SearchForm = ( props ) => {
- 
-    // const classNames = (this.props.state.isValidate) ? 'search-form__input ' : 'search-form__input error';
-    return (
-        <div className="container">
-            <div className="search-form">
-                <img alt="search ico" className="search-form__ico" src={logo} />
-                <input type="text" className='search-form__input' onKeyPress={() => {
-                    console.log(this)
-                }} placeholder="Enter your city" />
-            </div>
-        </div>
-    );
-}
 
-export default SearchForm;
+    
+    let city = '';
+    
+    const submit = ( event ) => {
+        event.preventDefault();
+        props.showElem( city )
+    }
+
+    const changeState = ( event ) => {
+        city = event.target.value
+    }
+    
+    const classNames = (props.state.isValidate) ? 'search-form__input ' : 'search-form__input error';
+
+    return (
+        <form onSubmit={submit} method="GET" action="#"  className="search-form">
+            <img alt="search ico" className="search-form__ico " src={ico} />
+            <input name="city" type="text" onChange={changeState} className={classNames} placeholder="Enter your city" />
+        </form>
+    );
+};
+
+export default SearchForm 

@@ -5,7 +5,7 @@
     color: #fff;
     transform: translateY(100%);
     opacity: 0;
-    transition: 250ms all;
+    transition: 700ms;
 
     &.show {
         transform: translateY(0);

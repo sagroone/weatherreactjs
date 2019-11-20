@@ -1,10 +1,14 @@
 import React, { Component } from 'react';
+
 import './_app.scss';
 
 import SearchForm from '../search-form';
 import WeatherNow from '../weather-now';
 import Location from '../location';
 import WeatherItemList from '../weather-item-list';
+
+import firstLaunch from './first-launch.png';
+import active from './active.png';
 export default class App extends Component {
 
     currentWeather;
@@ -12,26 +16,22 @@ export default class App extends Component {
     
     state = {
         units: 'metric',
-        city: null,
+        city: '',
         isActive: false,
         isValidate: true
     }
 
-    submit = ( value ) => {
-
-        this.setState({ name: value })
-       
+    showElem = ( city, units = 'metric' ) => {
+        this.getForecastWeatherApi( city, units );
+        this.getCurrentWeatherApi( city, units );
+        this.setState({ 
+            units: units,
+            city: city
+        });
     }
 
-    changeUnits = ( value ) => {
-        this.setState({
-            units: value
-        })
-    }
-
-    getForecastWeatherApi = () => {  
-
-        fetch(`https://community-open-weather-map.p.rapidapi.com/forecast/daily?q=${this.city}&cnt=7&units=${this.state.units}`, {
+    getForecastWeatherApi = ( city, units ) => {  
+        fetch(`https://community-open-weather-map.p.rapidapi.com/forecast/daily?q=${city}&cnt=7&units=${units}`, {
             "method": "GET",
             "headers": {
                 "x-rapidapi-host": "community-open-weather-map.p.rapidapi.com",
@@ -46,10 +46,8 @@ export default class App extends Component {
         })
     }
 
-    getCurrentWeatherApi = () => {  
-        
-            
-        fetch(`https://community-open-weather-map.p.rapidapi.com/weather?units=${this.state.units}&mode=json&q=${this.city}`, {
+    getCurrentWeatherApi = ( city, units ) => {  
+        fetch(`https://community-open-weather-map.p.rapidapi.com/weather?units=${units}&mode=json&q=${city}`, {
             "method": "GET",
             "headers": {
                 "x-rapidapi-host": "community-open-weather-map.p.rapidapi.com",
@@ -74,12 +72,20 @@ export default class App extends Component {
     }
 
     render() {
+
+        const hideCLass = this.state.isActive ? 'first-img hide' : 'first-img';
+
+        console.log(this.forecastWeather);
         return (
             <div className="weather">
-                <SearchForm submit={this.submit}/>
-                {this.state.isActive ? <Location state={this.state} {...this.currentWeather} /> : null}
-                {this.state.isActive ? <WeatherNow state={this.state} changeUnits={this.changeUnits} {...this.currentWeather} /> : null}
-                {this.state.isActive ? <WeatherItemList state={this.state} name={this.city.name} {...this.forecastWeather} /> : null}
+                <img alt="first launch img" className={hideCLass} src={firstLaunch}/>
+                <img alt="second launch img" className="active-img" src={active}/>
+                <div className="container">
+                    <SearchForm state={ this.state } showElem={this.showElem}/>
+                    {this.state.isActive ? <Location state={this.state} {...this.currentWeather} /> : null}
+                    {this.state.isActive ? <WeatherNow state={this.state} showElem={this.showElem} {...this.currentWeather} /> : null}
+                    {this.state.isActive ? <WeatherItemList state={this.state} {...this.forecastWeather} /> : null}
+                </div>
             </div>
         );
     }
