@@ -13,7 +13,13 @@ export default class App extends Component {
 
     currentWeather;
     forecastWeather;
-    
+    requestParams = {
+        method: 'GET',
+        headers: {
+            'x-rapidapi-host': 'community-open-weather-map.p.rapidapi.com',
+            'x-rapidapi-key': 'e09f1511e5mshdddd0499fd70955p1c78b3jsn3b1446a6f346',
+        }
+    }
     state = {
         units: 'metric',
         city: '',
@@ -22,60 +28,52 @@ export default class App extends Component {
     }
 
     showElem = ( city, units = 'metric' ) => {
-        this.getForecastWeatherApi( city, units );
+
         this.getCurrentWeatherApi( city, units );
+        this.getForecastWeatherApi( city, units );
         this.setState({ 
             units: units,
             city: city
         });
     }
 
-    getForecastWeatherApi = ( city, units ) => {  
-        fetch(`https://community-open-weather-map.p.rapidapi.com/forecast/daily?q=${city}&cnt=7&units=${units}`, {
-            "method": "GET",
-            "headers": {
-                "x-rapidapi-host": "community-open-weather-map.p.rapidapi.com",
-                "x-rapidapi-key": "e09f1511e5mshdddd0499fd70955p1c78b3jsn3b1446a6f346",
-            }
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.cod == '200') {
-                this.forecastWeather = data;
-            } 
-        })
+    getCurrentWeatherApi = async ( city, units ) => {  
+       
+        const url = `https://community-open-weather-map.p.rapidapi.com/weather?units=${units}&mode=json&q=${city}`;
+        const response = await fetch(url, {...this.requestParams});
+        const data = await response.json();
+
+        if (data.cod == '200') {
+            document.querySelector('.weather').classList.add('active');
+            this.currentWeather = data;
+            this.setState({
+                isValidate: true,
+                isActive: true
+            }) 
+        } else if (data.cod == '404') {
+            this.setState({
+                isValidate: false
+            })
+        }
     }
 
-    getCurrentWeatherApi = ( city, units ) => {  
-        fetch(`https://community-open-weather-map.p.rapidapi.com/weather?units=${units}&mode=json&q=${city}`, {
-            "method": "GET",
-            "headers": {
-                "x-rapidapi-host": "community-open-weather-map.p.rapidapi.com",
-                "x-rapidapi-key": "e09f1511e5mshdddd0499fd70955p1c78b3jsn3b1446a6f346",
-            }
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.cod == '200') {
-                document.querySelector('.weather').classList.add('active');
-                this.currentWeather = data;
-                this.setState({
-                    isValidate: true,
-                    isActive: true
-                })
-            } else if (data.cod == '404') {
-                this.setState({
-                    isValidate: false
-                })
-            }
-        })
+    getForecastWeatherApi = async ( city, units ) => {  
+       
+        const url = `https://community-open-weather-map.p.rapidapi.com/forecast/daily?q=${city}&cnt=7&units=${units}`;
+
+        const response = await fetch(url, {...this.requestParams});
+        const data = await response.json();
+
+        if (data.cod == '200') {
+            document.querySelector('.weather').classList.add('active');
+            this.forecastWeather = data;
+        }
     }
 
     render() {
 
         const hideCLass = this.state.isActive ? 'first-img hide' : 'first-img';
 
-        console.log(this.forecastWeather);
         return (
             <div className="weather">
                 <img alt="first launch img" className={hideCLass} src={firstLaunch}/>

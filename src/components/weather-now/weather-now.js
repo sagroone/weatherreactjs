@@ -19,7 +19,7 @@ const WeatherNow = ( props ) => {
  
     const cel = (props.state.units === 'metric') ? 'current-deg__units active' : 'current-deg__units'
     const far = (props.state.units === 'imperial') ? 'current-deg__units active' : 'current-deg__units'
-
+    const unitsLetter = props.state.units == 'metric' ? 'C' : 'F';
     const iconClass = 'icon-' + props.weather[0].icon;
     
     return(
@@ -29,8 +29,8 @@ const WeatherNow = ( props ) => {
             </div>
             <div className="weather-now__info">
                 <div className="whole-day">
-                    <div className="whole-day__min">Min {addPlus(Math.floor(temp_min))}<span className="cel">C</span></div>
-                    <div className="whole-day__max">Max {addPlus(Math.floor(temp_max))}<span className="cel">C</span></div>
+                    <div className="whole-day__min">Min {addPlus(Math.floor(temp_min))}<span className="cel">{unitsLetter}</span></div>
+                    <div className="whole-day__max">Max {addPlus(Math.floor(temp_max))}<span className="cel">{unitsLetter}</span></div>
                 </div>
                 <div className="current-deg">
                     <span className="current-deg__num">{addPlus(Math.floor(temp))}</span>
